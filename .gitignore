@@ -1,0 +1,11 @@
+env
+htmlcov
+
+.coverage
+.vscode
+
+*.pdf
+
+__pycache__
+
+TODO
