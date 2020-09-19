@@ -43,39 +43,6 @@ class ServerBaseTestCase(unittest.TestCase):
         self.assertIsNotNone(data["response_time"])
 
 
-class ServerFactorialTestCase(ServerBaseTestCase):
-    def test_basic_series(self):
-        """factorials: first 10 in series """
-        series = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880]
-
-        for i in range(len(series)):
-            with self.subTest(i=i):
-                resp = self.app.get("/api/factorial?n={}".format(i))
-                self.assertEqual(resp.status_code, 200)
-
-                data = resp.get_json()
-
-                self.assertEqual(series[i], data["factorial"])
-
-    # Common cases
-    def test_response_time(self):
-        """factorials: response_time is valid"""
-        super().common_json_response_time("/api/factorial?n=5")
-
-    # Common error cases
-    def test_invalid_n(self):
-        """factorials: n is invalid"""
-        super().errs_missing_invalid("/api/factorial?n=foobar")
-
-    def test_missing_n(self):
-        """factorials: n is missing"""
-        super().errs_missing_invalid("/api/factorial")
-
-    def test_negative(self):
-        """factorials: negatives"""
-        super().errs_negative("/api/factorial?n=-1")
-
-
 class ServerFibonacciTestCase(ServerBaseTestCase):
     def test_basic_series(self):
         """fibonacci: first 20 in series """
@@ -139,6 +106,111 @@ class ServerFibonacciTestCase(ServerBaseTestCase):
     def test_negative(self):
         """fibonacci: negatives"""
         super().errs_negative("/api/fibonacci?n=-1")
+
+
+class ServerAckermannTestCase(ServerBaseTestCase):
+    def test_basic_series(self):
+        """Ackermann function: values through A(3,4) """
+        series = [
+            [1, 2, 3, 4, 5],
+            [2, 3, 4, 5, 6],
+            [3, 5, 7, 9, 11],
+            [5, 13, 29, 61, 125],
+        ]
+
+        i = 0
+        for m in range(4):
+            for n in range(5):
+                i += 1
+                with self.subTest(i=i):
+                    resp = self.app.get("/api/ackermann?m={}&n={}".format(m, n))
+                    self.assertEqual(resp.status_code, 200)
+                    data = resp.get_json()
+                    self.assertEqual(series[m][n], data["ackermann"])
+
+    # Common cases
+    def test_response_time(self):
+        """factorials: response_time is valid"""
+        super().common_json_response_time("/api/ackermann?m=0&n=0")
+
+    # error cases
+    def test_negative(self):
+        """Ackermann function should not support negatives"""
+        cases = [
+            (-1, 0),  # m is negative
+            (0, -1),  # n is negative
+            (-1, -1),  # both are negative
+        ]
+        for case in cases:
+            resp = self.app.get("/api/ackermann?m={0}&n={1}".format(*case))
+            self.assertEqual(resp.status_code, 400)
+
+            data = resp.get_json()
+
+            self.assertEqual(
+                "bad request: neither query parameter m nor n can be negative",
+                data["error"],
+            )
+
+    def test_missing(self):
+        """Ackermann function needs valid m and n parameters"""
+        resp = self.app.get("/api/ackermann")
+        self.assertEqual(resp.status_code, 400)
+
+        data = resp.get_json()
+
+        self.assertEqual(
+            "bad request: query parameter m and/or n missing or invalid", data["error"]
+        )
+
+    def test_overflow(self):
+        """Ackermann function will stack overflow where m >= 5"""
+
+        # N.B: this depends on how the interpreter's recursion stack is set
+        # to ensure a reliable test, we'll set m to some absurdly high value, but it
+        # will overflow much sooner than that
+        resp = self.app.get("/api/ackermann?m=100&n=0")
+        self.assertEqual(resp.status_code, 400)
+
+        data = resp.get_json()
+
+        self.assertEqual(
+            "bad request: maximum recursion depth exceeded calculating Ackermann function where m=100 and n=0",
+            data["error"],
+        )
+
+
+class ServerFactorialTestCase(ServerBaseTestCase):
+    def test_basic_series(self):
+        """factorials: first 10 in series """
+        series = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880]
+
+        for i in range(len(series)):
+            with self.subTest(i=i):
+                resp = self.app.get("/api/factorial?n={}".format(i))
+                self.assertEqual(resp.status_code, 200)
+
+                data = resp.get_json()
+
+                self.assertEqual(series[i], data["factorial"])
+
+    # Common cases
+    def test_response_time(self):
+        """factorials: response_time is valid"""
+        super().common_json_response_time("/api/factorial?n=5")
+
+    # Common error cases
+    def test_invalid_n(self):
+        """factorials: n is invalid"""
+        super().errs_missing_invalid("/api/factorial?n=foobar")
+
+    def test_missing_n(self):
+        """factorials: n is missing"""
+        super().errs_missing_invalid("/api/factorial")
+
+    def test_negative(self):
+        """factorials: negatives"""
+        super().errs_negative("/api/factorial?n=-1")
 
 
 if __name__ == "__main__":
