@@ -70,7 +70,7 @@ def get_fibonacci():
         )
         return jsonify(
             {
-                "fibonacci": fn,
+                "value": fn,
                 "processing_time": "{:.5f}s".format(processing_end - processing_start),
             }
         )
@@ -113,7 +113,7 @@ def get_ackermann():
         processing_end = time.time()
 
         app.logger.info(
-            "calculated ackermann function for m={}, n={} in {:.5f}s".format(
+            "calculated Ackermann function for m={}, n={} in {:.5f}s".format(
                 m,
                 n,
                 processing_end - processing_start,
@@ -122,7 +122,7 @@ def get_ackermann():
 
         return jsonify(
             {
-                "ackermann": ack,
+                "value": ack,
                 "processing_time": "{:.5f}s".format(processing_end - processing_start),
             }
         )
@@ -182,7 +182,7 @@ def get_factorial():
 
     return jsonify(
         {
-            "factorial": f,
+            "value": f,
             "processing_time": "{:.5f}s".format(processing_end - processing_start),
         }
     )

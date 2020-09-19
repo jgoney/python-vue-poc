@@ -1,0 +1,109 @@
+openapi: 3.0.0
+info:
+  title: Klarna assignment API
+  description: API for accessing the requested algorithms
+  version: "1.0"
+paths:
+  /api/fibonacci:
+    get:
+      summary: Get nth number from Fibonacci sequence
+      description: >
+        Calculate a ​Fibonacci number​ F(n), where n is provided by the user.
+      parameters:
+        - name: n
+          in: path
+          description: The number in the Fibonacci sequence we wish to calculate
+          required: true
+          schema:
+            type: integer
+            minimum: 0
+      responses:
+        "200":
+          description: Successfully calculated nth Fibonacci number
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValueResponse"
+        "400":
+          description: Bad request
+        default:
+          description: Unexpected error
+
+  /api/ackermann:
+    get:
+      summary: Get result of Ackermann function
+      description: >
+        Calculate the result of the Ackermann function​ A(m,n), where m and n are provided by the user.
+      parameters:
+        - name: m
+          in: path
+          description: The 'm' parameter for the Ackermann function
+          required: true
+          schema:
+            type: integer
+            minimum: 0
+        - name: n
+            in: path
+            description: The 'n' parameter for the Ackermann function
+            required: true
+            schema:
+              type: integer
+              minimum: 0
+      responses:
+        "200":
+          description: Successfully calculated result of Ackermann function​
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValueResponse"
+        "400":
+          description: Bad request
+        default:
+          description: Unexpected error
+
+  /api/factorial:
+    get:
+      summary: Get factorial for n
+      description: >
+        Calculate factorial for n, where n is provided by the user.
+      parameters:
+        - name: n
+          in: path
+          description: The number for which we would to calculate the factorial
+          required: true
+          schema:
+            type: integer
+            minimum: 0
+      responses:
+        "200":
+          description: Successfully calculated factorial for n
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValueResponse"
+        "400":
+          description: Bad request
+        default:
+          description: Unexpected error
+
+components:
+  schemas:
+    ValueResponse:
+      type: object
+      required:
+        - value
+        - processing_time
+        - response_time
+      properties:
+        value:
+          type: integer
+          example: 125
+          description: This is the value calculated by the algorithm.
+        processing_time:
+          type: string
+          example: 0.04314s
+          description: The time in seconds the algorithm took to calculate the value.
+        response_time:
+          type: string
+          example: 0.04314s
+          description: The time in seconds needed to serve the response (including processing time).

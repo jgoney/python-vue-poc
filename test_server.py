@@ -76,7 +76,7 @@ class ServerFibonacciTestCase(ServerBaseTestCase):
 
                 data = resp.get_json()
 
-                self.assertEqual(series[i], data["fibonacci"])
+                self.assertEqual(series[i], data["value"])
 
     def test_very_large(self):
         """fibonacci: very large numbers"""
@@ -87,7 +87,7 @@ class ServerFibonacciTestCase(ServerBaseTestCase):
 
         result = 27269884455406270157991615313642198705000779992917725821180502894974726476373026809482509284562310031170172380127627214493597616743856443016039972205847405917634660750474914561879656763268658528092195715626073248224067794253809132219056382939163918400
 
-        self.assertEqual(result, data["fibonacci"])
+        self.assertEqual(result, data["value"])
 
     # Common cases
     def test_response_time(self):
@@ -126,7 +126,7 @@ class ServerAckermannTestCase(ServerBaseTestCase):
                     resp = self.app.get("/api/ackermann?m={}&n={}".format(m, n))
                     self.assertEqual(resp.status_code, 200)
                     data = resp.get_json()
-                    self.assertEqual(series[m][n], data["ackermann"])
+                    self.assertEqual(series[m][n], data["value"])
 
     # Common cases
     def test_response_time(self):
@@ -192,7 +192,7 @@ class ServerFactorialTestCase(ServerBaseTestCase):
 
                 data = resp.get_json()
 
-                self.assertEqual(series[i], data["factorial"])
+                self.assertEqual(series[i], data["value"])
 
     # Common cases
     def test_response_time(self):
