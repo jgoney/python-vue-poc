@@ -33,6 +33,15 @@ class ServerBaseTestCase(unittest.TestCase):
             "bad request: query parameter n missing or invalid", data["error"]
         )
 
+    def common_json_response_time(self, url):
+        """JSON responses should include response time field"""
+        resp = self.app.get(url)
+        self.assertTrue(resp.is_json)
+
+        data = resp.get_json()
+
+        self.assertIsNotNone(data["response_time"])
+
 
 class ServerFactorialTestCase(ServerBaseTestCase):
     def test_basic_series(self):
@@ -47,6 +56,11 @@ class ServerFactorialTestCase(ServerBaseTestCase):
                 data = resp.get_json()
 
                 self.assertEqual(series[i], data["factorial"])
+
+    # Common cases
+    def test_response_time(self):
+        """factorials: response_time is valid"""
+        super().common_json_response_time("/api/factorial?n=5")
 
     # Common error cases
     def test_invalid_n(self):
@@ -104,17 +118,14 @@ class ServerFibonacciTestCase(ServerBaseTestCase):
 
         data = resp.get_json()
 
-        result = 27269884455407365847192026241192332547250796698164704715463580385597197075537548253492087865024098245321784944722311472705029391914337116136306691783618953277982977916818418369582710642008814191391090984759478348473276714347732043884108324642586886144
+        result = 27269884455406270157991615313642198705000779992917725821180502894974726476373026809482509284562310031170172380127627214493597616743856443016039972205847405917634660750474914561879656763268658528092195715626073248224067794253809132219056382939163918400
+
         self.assertEqual(result, data["fibonacci"])
 
-    def test_too_large(self):
-        """fibonacci: n too large"""
-        resp = self.app.get("/api/fibonacci?n={}".format(1000000))
-        self.assertEqual(resp.status_code, 400)
-
-        data = resp.get_json()
-
-        self.assertEqual("bad request: n=1000000 is too big", data["error"])
+    # Common cases
+    def test_response_time(self):
+        """fibonacci: response_time is valid"""
+        super().common_json_response_time("/api/fibonacci?n=5")
 
     # Common error cases
     def test_invalid_n(self):
