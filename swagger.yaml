@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Klarna assignment API
-  description: API for accessing the requested algorithms
+  description: API for accessing the requested algorithms (Fibonacci, Ackermann, and factorial).
   version: "1.0"
 paths:
   /api/fibonacci:
@@ -10,7 +10,7 @@ paths:
       description: >
         Calculate a ​Fibonacci number​ F(n), where n is provided by the user.
       parameters:
-        - in: path
+        - in: query
           name: n
           schema:
             type: integer
@@ -40,14 +40,14 @@ paths:
         Calculate the result of the Ackermann function​ A(m,n), where m and n are provided by the user.
       parameters:
         - name: m
-          in: path
+          in: query
           description: The 'm' parameter for the Ackermann function
           required: true
           schema:
             type: integer
             minimum: 0
         - name: n
-          in: path
+          in: query
           description: The 'n' parameter for the Ackermann function
           required: true
           schema:
@@ -76,7 +76,7 @@ paths:
         Calculate factorial for n, where n is provided by the user.
       parameters:
         - name: n
-          in: path
+          in: query
           description: The number for which we would to calculate the factorial
           required: true
           schema:
