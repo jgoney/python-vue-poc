@@ -10,13 +10,13 @@ paths:
       description: >
         Calculate a ​Fibonacci number​ F(n), where n is provided by the user.
       parameters:
-        - name: n
-          in: path
-          description: The number in the Fibonacci sequence we wish to calculate
-          required: true
+        - in: path
+          name: n
           schema:
             type: integer
             minimum: 0
+          description: The number in the Fibonacci sequence we wish to calculate
+          required: true
       responses:
         "200":
           description: Successfully calculated nth Fibonacci number
@@ -26,6 +26,10 @@ paths:
                 $ref: "#/components/schemas/ValueResponse"
         "400":
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
         default:
           description: Unexpected error
 
@@ -43,12 +47,12 @@ paths:
             type: integer
             minimum: 0
         - name: n
-            in: path
-            description: The 'n' parameter for the Ackermann function
-            required: true
-            schema:
-              type: integer
-              minimum: 0
+          in: path
+          description: The 'n' parameter for the Ackermann function
+          required: true
+          schema:
+            type: integer
+            minimum: 0
       responses:
         "200":
           description: Successfully calculated result of Ackermann function​
@@ -58,6 +62,10 @@ paths:
                 $ref: "#/components/schemas/ValueResponse"
         "400":
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
         default:
           description: Unexpected error
 
@@ -83,6 +91,10 @@ paths:
                 $ref: "#/components/schemas/ValueResponse"
         "400":
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
         default:
           description: Unexpected error
 
@@ -107,3 +119,18 @@ components:
           type: string
           example: 0.04314s
           description: The time in seconds needed to serve the response (including processing time).
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - response_time
+      properties:
+        error:
+          type: string
+          example: "bad request: query parameter n cannot be negative"
+          description: A error message describing what went wrong.
+        response_time:
+          type: string
+          example: 0.04314s
+          description: The time in seconds needed to serve the response.
