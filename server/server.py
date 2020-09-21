@@ -1,12 +1,23 @@
+import os
 import math
 import time
 
-from flask import Flask, jsonify, make_response, request, g
+from flask import (
+    Flask,
+    jsonify,
+    make_response,
+    request,
+    g,
+    render_template,
+    send_from_directory,
+)
 
 import settings
 
 
-app = Flask(__name__)
+templates = os.path.abspath("dist")
+print(templates)
+app = Flask(__name__, template_folder=templates, static_url_path=templates)
 app.config.from_object(settings)
 
 
@@ -70,7 +81,7 @@ def get_fibonacci():
         )
         return jsonify(
             {
-                "value": fn,
+                "value": str(fn),
                 "processing_time": "{:.5f}s".format(processing_end - processing_start),
             }
         )
@@ -188,5 +199,30 @@ def get_factorial():
     )
 
 
+# Serve index.html template and static files
+# You MUST run `npm run build` first to ensure that the dist/ 
+# directory exists.
+@app.route("/", methods=["GET"])
+def index():
+    return render_template("index.html")
+
+
+@app.route("/<path:path>", methods=["GET"])
+def send_favicons(path):
+    return send_from_directory(app.static_url_path, path)
+
+
+@app.route("/js/<path:path>", methods=["GET"])
+def send_js(path):
+    js_path = os.path.join(app.static_url_path, "js")
+    return send_from_directory(js_path, path)
+
+
+@app.route("/css/<path:path>", methods=["GET"])
+def send_css(path):
+    css_path = os.path.join(app.static_url_path, "css")
+    return send_from_directory(css_path, path)
+
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", port=settings.PORT)
