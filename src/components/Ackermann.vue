@@ -8,6 +8,7 @@
       :paramKeys="params"
       :warningLimit="4"
       funcLabel="A(m,n)"
+      prefix="ackermann"
       url="/api/ackermann"
     />
   </div>

@@ -2,16 +2,18 @@
   <div>
     <b-form @submit="onSubmit" :inline="paramKeys.length < 2">
       <b-form-group
-        :id="'input-group-' + pk"
+        :id="`input-group-${prefix}-${pk}`"
         :key="i"
-        :label-for="`input-${pk}`"
-        :label="pk + ':'"
+        :label-for="`input-${prefix}-${pk}`"
         label-cols="1"
         v-for="(pk, i) in paramKeys"
       >
+        <template v-slot:label>
+          <strong>{{ pk + ":" }}</strong>
+        </template>
         <b-form-input
           :disabled="loading"
-          :id="`input-${pk}`"
+          :id="`input-${prefix}-${pk}`"
           class="ml-2"
           min="1"
           required
@@ -55,20 +57,22 @@ export default {
   },
   props: {
     funcLabel: String,
-    warningLimit: Number,
+    paramKeys: Array,
+    prefix: String,
     url: String,
-    paramKeys: Array
+    warningLimit: Number
   },
   data() {
     return {
-      value: null,
+      error: "",
+      loading: false,
+      params: {},
       processingTime: "",
       responseTime: "",
-      loading: false,
-      error: "",
-      params: {}
+      value: null
     };
   },
+
   computed: {
     showWarning() {
       for (const val of Object.values(this.params)) {

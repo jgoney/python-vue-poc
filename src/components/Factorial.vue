@@ -5,6 +5,7 @@
       :paramKeys="params"
       :warningLimit="100000"
       funcLabel="n!"
+      prefix="factorial"
       url="/api/factorial"
     />
   </div>

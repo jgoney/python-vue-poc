@@ -7,6 +7,7 @@
       :paramKeys="params"
       :warningLimit="500000"
       funcLabel="f(n)"
+      prefix="fibonacci"
       url="/api/fibonacci"
     />
   </div>
