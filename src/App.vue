@@ -3,6 +3,9 @@
     <b-navbar toggleable="lg" type="dark" variant="info">
       <b-navbar-brand href="#">Home programming assignment</b-navbar-brand>
     </b-navbar>
+    <b-alert v-model="showAlert" :variant="alertVariant" dismissible>
+      {{ alertMessage }}
+    </b-alert>
     <b-container>
       <b-row>
         <b-col>
@@ -24,6 +27,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 import Ackermann from "@/components/Ackermann";
 import Factorial from "@/components/Factorial";
 import Fibonacci from "@/components/Fibonacci";
@@ -34,6 +39,17 @@ export default {
     Ackermann,
     Factorial,
     Fibonacci
+  },
+  computed: {
+    ...mapState(["alertMessage", "alertVariant"]),
+    showAlert: {
+      get() {
+        return this.$store.state.showAlert;
+      },
+      set() {
+        this.$store.commit("clearAlert");
+      }
+    }
   }
 };
 </script>

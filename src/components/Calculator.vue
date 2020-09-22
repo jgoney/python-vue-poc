@@ -15,7 +15,7 @@
           :disabled="loading"
           :id="`input-${prefix}-${pk}`"
           class="ml-2"
-          min="1"
+          min="0"
           required
           type="number"
           v-model="params[pk]"
@@ -91,6 +91,7 @@ export default {
       this.error = "";
     },
     calculate() {
+      this.$store.commit("clearAlert");
       this.clearData();
       this.loading = true;
 
@@ -103,13 +104,22 @@ export default {
       const resp = fetch(`${this.url}?${qp}`)
         .then(response => response.json())
         .then(data => {
-          this.value = data.value;
+          if (data.error) {
+            this.$store.commit("setAlert", {
+              message: data.error,
+              variant: "danger"
+            });
+          } else {
+            this.value = data.value;
+            this.processingTime = data.processingTime;
+          }
           this.responseTime = data.responseTime;
-          this.processingTime = data.processingTime;
-          this.error = data.error;
         })
         .catch(error => {
-          console.error("Error:", error);
+          this.$store.commit("setAlert", {
+            message: error,
+            variant: "danger"
+          });
         })
         .finally(() => {
           this.loading = false;
@@ -121,7 +131,7 @@ export default {
     }
   },
   mounted() {
-    // Dynamically setup our params based on the parameter keys passed as ..
+    // Dynamically setup our params based on the parameter keys passed as an array
     for (const key of this.paramKeys) {
       this.$set(this.params, key, 1);
     }
