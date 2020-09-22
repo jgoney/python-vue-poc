@@ -40,14 +40,19 @@
       Total response time: {{ responseTime }} </span
     ><br />
     <p v-if="value" class="mt-3 wrap-value">
-      <strong>{{ funcLabel }}</strong> = {{ value }}
+      <strong>{{ funcLabel }}</strong> = <Results :value="value" />
     </p>
   </div>
 </template>
 
 <script>
+import Results from "@/components/Results.vue";
+
 export default {
   name: "Calculator",
+  components: {
+    Results
+  },
   props: {
     funcLabel: String,
     warningLimit: Number,
@@ -112,7 +117,7 @@ export default {
     }
   },
   mounted() {
-    // Dynamically setup our params based on the parameter keys passed as props...
+    // Dynamically setup our params based on the parameter keys passed as ..
     for (const key of this.paramKeys) {
       this.$set(this.params, key, 1);
     }
@@ -132,9 +137,5 @@ export default {
 
 .stats {
   color: grey;
-}
-
-.wrap-value {
-  overflow-wrap: anywhere;
 }
 </style>

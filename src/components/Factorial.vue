@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h5 class="mb-3">
-      Calculates the factorial of <em>n</em>, a.k.a. <em>n!</em>
-    </h5>
+    <h5 class="mb-3">Calculates <em>n!</em> (the factorial of <em>n</em>)</h5>
     <Calculator
       :paramKeys="params"
       :warningLimit="100000"
@@ -14,6 +12,7 @@
 
 <script>
 import Calculator from "@/components/Calculator";
+
 export default {
   name: "Factorial",
   components: {
