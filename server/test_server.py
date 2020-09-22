@@ -121,10 +121,10 @@ class ServerAckermannTestCase(ServerBaseTestCase):
     def test_basic_series(self):
         """Ackermann function: values through A(3,4) """
         series = [
-            [1, 2, 3, 4, 5],
-            [2, 3, 4, 5, 6],
-            [3, 5, 7, 9, 11],
-            [5, 13, 29, 61, 125],
+            ["1", "2", "3", "4", "5"],
+            ["2", "3", "4", "5", "6"],
+            ["3", "5", "7", "9", "11"],
+            ["5", "13", "29", "61", "125"],
         ]
 
         i = 0
@@ -204,7 +204,7 @@ class ServerAckermannTestCase(ServerBaseTestCase):
 class ServerFactorialTestCase(ServerBaseTestCase):
     def test_basic_series(self):
         """factorials: first 10 in series """
-        series = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880]
+        series = ["1", "1", "2", "6", "24", "120", "720", "5040", "40320", "362880"]
 
         for i in range(len(series)):
             with self.subTest(i=i):

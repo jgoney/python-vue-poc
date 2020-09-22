@@ -79,6 +79,7 @@ def get_fibonacci():
                 processing_end - processing_start,
             )
         )
+        # return value as string, since JavaScript can mangle these values as numbers
         return jsonify(
             {
                 "value": str(fn),
@@ -131,9 +132,10 @@ def get_ackermann():
             )
         )
 
+        # return value as string, since JavaScript can mangle these values as numbers
         return jsonify(
             {
-                "value": ack,
+                "value": str(ack),
                 "processingTime": "{:.5f}s".format(processing_end - processing_start),
             }
         )
@@ -191,9 +193,10 @@ def get_factorial():
         )
     )
 
+    # return value as string, since JavaScript can mangle these values as numbers
     return jsonify(
         {
-            "value": f,
+            "value": str(f),
             "processingTime": "{:.5f}s".format(processing_end - processing_start),
         }
     )
