@@ -108,8 +108,8 @@ components:
         - responseTime
       properties:
         value:
-          type: integer
-          example: 125
+          type: string
+          example: "125"
           description: This is the value calculated by the algorithm.
         processingTime:
           type: string
