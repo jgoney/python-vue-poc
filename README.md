@@ -15,13 +15,10 @@ Other versions may work, but at your own risk. Caveat emptor.
 
 ```bash
 npm install  # Install JavaScript dependencies
-
-npm run build  # Compile and minifies for production
+npm run build  # Compile and minify JavaScript for production
 
 python3 -m venv ./env  # Initialize Python virtual environment
-
 . env/bin/activate   # Activate virtualenv in current shell
-
 pip install -r requirements.txt  # Install Python dependencies
 
 python server/server.py  # Run Flask server
@@ -29,18 +26,22 @@ python server/server.py  # Run Flask server
 
 To view the webapp, visit http://0.0.0.0:8869 in your web browser.
 
+N.B.; if you try to run the Python server without building the JavaScript first, you'll encounter a `jinja2.exceptions.TemplateNotFound` error. Just run `npm run build` and try again.
+
 ## Running tests
 
 After setting up your Python and JavaScripts environments as described above, you can run tests as follows:
 
 ```bash
-python server/test_server.py  # Run server tests
-
+# Server tests
+python server/test_server.py  # Run tests
 coverage run --omit=env/* server/test_server.py  # Run server tests with Coverage
-
 coverage html  # Generate Coverage report (run above command first)
-
 open htmlcov/index.html  # Open Coverage HTML report on MacOS
+
+# Frontend tests
+npm run test:unit  # Run tests
+open coverage/lcov-report/index.html  # Open Coverage HTML report on MacOS
 ```
 
 ## Notes / optimizations
