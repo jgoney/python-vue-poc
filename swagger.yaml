@@ -104,18 +104,18 @@ components:
       type: object
       required:
         - value
-        - processing_time
-        - response_time
+        - processingTime
+        - responseTime
       properties:
         value:
           type: integer
           example: 125
           description: This is the value calculated by the algorithm.
-        processing_time:
+        processingTime:
           type: string
           example: 0.04314s
           description: The time in seconds the algorithm took to calculate the value.
-        response_time:
+        responseTime:
           type: string
           example: 0.04314s
           description: The time in seconds needed to serve the response (including processing time).
@@ -124,13 +124,13 @@ components:
       type: object
       required:
         - error
-        - response_time
+        - responseTime
       properties:
         error:
           type: string
           example: "bad request: query parameter n cannot be negative"
           description: A error message describing what went wrong.
-        response_time:
+        responseTime:
           type: string
           example: 0.04314s
           description: The time in seconds needed to serve the response.

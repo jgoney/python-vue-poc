@@ -40,7 +40,7 @@ class ServerBaseTestCase(unittest.TestCase):
 
         data = resp.get_json()
 
-        self.assertIsNotNone(data["response_time"])
+        self.assertIsNotNone(data["responseTime"])
 
 
 class ServerFibonacciTestCase(ServerBaseTestCase):
@@ -78,6 +78,15 @@ class ServerFibonacciTestCase(ServerBaseTestCase):
 
                 self.assertEqual(series[i], data["value"])
 
+    def test_processing_time(self):
+        """fibonacci: processingTime is present on successful requests"""
+        resp = self.app.get("/api/fibonacci?n={}".format(5))
+        self.assertEqual(resp.status_code, 200)
+
+        data = resp.get_json()
+
+        self.assertIsNotNone(data["processingTime"])
+
     def test_very_large(self):
         """fibonacci: very large numbers"""
         resp = self.app.get("/api/fibonacci?n={}".format(1200))
@@ -91,7 +100,7 @@ class ServerFibonacciTestCase(ServerBaseTestCase):
 
     # Common cases
     def test_response_time(self):
-        """fibonacci: response_time is valid"""
+        """fibonacci: responseTime is valid"""
         super().common_json_response_time("/api/fibonacci?n=5")
 
     # Common error cases
@@ -128,9 +137,18 @@ class ServerAckermannTestCase(ServerBaseTestCase):
                     data = resp.get_json()
                     self.assertEqual(series[m][n], data["value"])
 
+    def test_processing_time(self):
+        """Ackermann function: processingTime is present on successful requests"""
+        resp = self.app.get("/api/ackermann?m={}&n={}".format(1, 1))
+        self.assertEqual(resp.status_code, 200)
+
+        data = resp.get_json()
+
+        self.assertIsNotNone(data["processingTime"])
+
     # Common cases
     def test_response_time(self):
-        """factorials: response_time is valid"""
+        """Ackermann function: responseTime is valid"""
         super().common_json_response_time("/api/ackermann?m=0&n=0")
 
     # error cases
@@ -141,16 +159,19 @@ class ServerAckermannTestCase(ServerBaseTestCase):
             (0, -1),  # n is negative
             (-1, -1),  # both are negative
         ]
+        i = 0
         for case in cases:
-            resp = self.app.get("/api/ackermann?m={0}&n={1}".format(*case))
-            self.assertEqual(resp.status_code, 400)
+            i += 1
+            with self.subTest(i=i):
+                resp = self.app.get("/api/ackermann?m={0}&n={1}".format(*case))
+                self.assertEqual(resp.status_code, 400)
 
-            data = resp.get_json()
+                data = resp.get_json()
 
-            self.assertEqual(
-                "bad request: neither query parameter m nor n can be negative",
-                data["error"],
-            )
+                self.assertEqual(
+                    "bad request: neither query parameter m nor n can be negative",
+                    data["error"],
+                )
 
     def test_missing(self):
         """Ackermann function needs valid m and n parameters"""
@@ -194,9 +215,18 @@ class ServerFactorialTestCase(ServerBaseTestCase):
 
                 self.assertEqual(series[i], data["value"])
 
+    def test_processing_time(self):
+        """factorials: processingTime is present on successful requests"""
+        resp = self.app.get("/api/factorial?n={}".format(5))
+        self.assertEqual(resp.status_code, 200)
+
+        data = resp.get_json()
+
+        self.assertIsNotNone(data["processingTime"])
+
     # Common cases
     def test_response_time(self):
-        """factorials: response_time is valid"""
+        """factorials: responseTime is valid"""
         super().common_json_response_time("/api/factorial?n=5")
 
     # Common error cases

@@ -31,7 +31,7 @@ def before_request():
 def after_request(resp):
     if resp.is_json:
         j = resp.get_json()
-        j["response_time"] = g.request_time()
+        j["responseTime"] = g.request_time()
         return make_response(jsonify(j), resp.status_code)
 
     return resp
@@ -82,7 +82,7 @@ def get_fibonacci():
         return jsonify(
             {
                 "value": str(fn),
-                "processing_time": "{:.5f}s".format(processing_end - processing_start),
+                "processingTime": "{:.5f}s".format(processing_end - processing_start),
             }
         )
 
@@ -134,7 +134,7 @@ def get_ackermann():
         return jsonify(
             {
                 "value": ack,
-                "processing_time": "{:.5f}s".format(processing_end - processing_start),
+                "processingTime": "{:.5f}s".format(processing_end - processing_start),
             }
         )
 
@@ -194,13 +194,13 @@ def get_factorial():
     return jsonify(
         {
             "value": f,
-            "processing_time": "{:.5f}s".format(processing_end - processing_start),
+            "processingTime": "{:.5f}s".format(processing_end - processing_start),
         }
     )
 
 
 # Serve index.html template and static files
-# You MUST run `npm run build` first to ensure that the dist/ 
+# You MUST run `npm run build` first to ensure that the dist/
 # directory exists.
 @app.route("/", methods=["GET"])
 def index():

@@ -33,11 +33,11 @@
       Warning: values this large may calculate slowly </span
     ><br />
 
-    <span v-if="processing_time" class="mt-3 smaller text-secondary">
-      Calculation time: {{ processing_time }} </span
+    <span v-if="processingTime" class="mt-3 smaller text-secondary">
+      Calculation time: {{ processingTime }} </span
     ><br />
-    <span v-if="response_time" class="smaller text-secondary">
-      Total response time: {{ response_time }} </span
+    <span v-if="responseTime" class="smaller text-secondary">
+      Total response time: {{ responseTime }} </span
     ><br />
     <p v-if="value" class="mt-3 wrap-value">
       <strong>{{ funcLabel }}</strong> = {{ value }}
@@ -57,8 +57,8 @@ export default {
   data() {
     return {
       value: null,
-      processing_time: "",
-      response_time: "",
+      processingTime: "",
+      responseTime: "",
       loading: false,
       error: "",
       params: {}
@@ -77,8 +77,8 @@ export default {
   methods: {
     clearData() {
       this.value = null;
-      this.response_time = "";
-      this.processing_time = "";
+      this.responseTime = "";
+      this.processingTime = "";
       this.error = "";
     },
     calculate() {
@@ -95,8 +95,8 @@ export default {
         .then(response => response.json())
         .then(data => {
           this.value = data.value;
-          this.response_time = data.response_time;
-          this.processing_time = data.processing_time;
+          this.responseTime = data.responseTime;
+          this.processingTime = data.processingTime;
           this.error = data.error;
         })
         .catch(error => {
