@@ -127,11 +127,9 @@ class ServerAckermannTestCase(ServerBaseTestCase):
             ["5", "13", "29", "61", "125"],
         ]
 
-        i = 0
-        for m in range(4):
-            for n in range(5):
-                i += 1
-                with self.subTest(i=i):
+        for m, _ in enumerate(series):
+            for n, _ in enumerate(series[m]):
+                with self.subTest(m=m, n=n):
                     resp = self.app.get("/api/ackermann?m={}&n={}".format(m, n))
                     self.assertEqual(resp.status_code, 200)
                     data = resp.get_json()

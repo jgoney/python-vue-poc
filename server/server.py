@@ -2,6 +2,7 @@ import os
 import math
 import time
 
+
 from flask import (
     Flask,
     jsonify,
@@ -16,7 +17,7 @@ import settings
 
 
 templates = os.path.abspath("dist")
-print(templates)
+
 app = Flask(__name__, template_folder=templates, static_url_path=templates)
 app.config.from_object(settings)
 
@@ -40,7 +41,7 @@ def after_request(resp):
 @app.route("/api/fibonacci", methods=["GET"])
 def get_fibonacci():
     """
-    For a valid positive integer 'n', returns the nth value in the Fibonacci series
+    For a valid non-negative integer 'n', returns the nth value in the Fibonacci series
     """
 
     n = request.args.get("n")
@@ -95,6 +96,15 @@ def get_fibonacci():
 
 @app.route("/api/ackermann", methods=["GET"])
 def get_ackermann():
+    """
+    For a valid non-negative integers 'm' and 'n', returns the result of the Ackermann function.
+
+    This implementation uses memoization and direct computation optimizations inspired by
+    https://medium.com/@a3zakir/computing-ackermann-function-in-ruby-1ec6fad22b2e. Still, the heavily
+    recursive nature of the Ackermann function means that it will overflow the stack with relatively
+    small arguments. The default recursion limit can be tweaked via sys.setrecursionlimit(), but this
+    should be tuned on a case-by-case basis, as setting it too big can cause segfaults.
+    """
     m = request.args.get("m")
     n = request.args.get("n")
 
@@ -112,13 +122,34 @@ def get_ackermann():
                 400,
             )
 
+        # dictionary cache to allow for memoization of ackermann(m, n)
+        # in a real app, this could be cached in memcached, Redis, or the database, for example
+        cache = {}
+
         def ackermann(m, n):
+
+            if m in cache and n in cache[m]:
+                return cache[m][n]
+
             if m == 0:
-                return n + 1
-            elif m > 0 and n == 0:
-                return ackermann(m - 1, 1)
+                result = n + 1
+            elif m == 1:
+                result = n + 2
+            elif m == 2:
+                result = 2 * n + 3
+            elif m == 3:
+                result = 2 ** (n + 3) - 3
+            elif n == 0:
+                result = ackermann(m - 1, 1)
             else:
-                return ackermann(m - 1, ackermann(m, n - 1))
+                result = ackermann(m - 1, ackermann(m, n - 1))
+
+            if m not in cache:
+                cache[m] = {}
+
+            cache[m][n] = result
+
+            return result
 
         processing_start = time.time()
         ack = ackermann(m, n)
@@ -203,13 +234,14 @@ def get_factorial():
 
 
 # Serve index.html template and static files
-# You MUST run `npm run build` first to ensure that the dist/
-# directory exists.
+# You MUST run `npm run build` first to ensure that the dist/ directory exists.
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html")
 
 
+# Routes for serving favicons and js/css files.
+# In a production environment, these would be served by the reverse proxy
 @app.route("/<path:path>", methods=["GET"])
 def send_favicons(path):
     return send_from_directory(app.static_url_path, path)

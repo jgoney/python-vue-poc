@@ -34,6 +34,7 @@ After setting up your Python and JavaScripts environments as described above, yo
 
 ```bash
 # Server tests
+. env/bin/activate   # Still in virtualenv, from above instructions
 python server/test_server.py  # Run tests
 coverage run --omit=env/* server/test_server.py  # Run server tests with Coverage
 coverage html  # Generate Coverage report (run above command first)
