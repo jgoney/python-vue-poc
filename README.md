@@ -1,4 +1,4 @@
-# Home programming assignment
+# Pythong/Vue Proof of Concept
 
 ## Pre-requisites
 
@@ -36,7 +36,7 @@ After setting up your Python and JavaScripts environments as described above, yo
 # Server tests
 . env/bin/activate   # Still in virtualenv, from above instructions
 python server/test_server.py  # Run tests
-coverage run --omit=env/* server/test_server.py  # Run server tests with Coverage
+coverage run --source=server server/test_server.py  # Run server tests with Coverage
 coverage html  # Generate Coverage report (run above command first)
 open htmlcov/index.html  # Open Coverage HTML report on MacOS
 

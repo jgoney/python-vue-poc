@@ -2,7 +2,6 @@
   <b-form-textarea
     id="textarea"
     v-model="props.value"
-    placeholder="Enter something..."
     readonly
     plaintext
     max-rows="24"

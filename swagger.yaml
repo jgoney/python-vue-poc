@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Klarna assignment API
+  title: Python / Vue proof of concept API
   description: API for accessing the requested algorithms (Fibonacci, Ackermann, and factorial).
   version: "1.0"
 paths:
