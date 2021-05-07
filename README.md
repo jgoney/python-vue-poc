@@ -1,4 +1,4 @@
-# Pythong/Vue Proof of Concept
+# Python / Vue Proof of Concept
 
 ## Pre-requisites
 
